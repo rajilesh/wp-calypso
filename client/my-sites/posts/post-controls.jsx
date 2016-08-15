@@ -100,14 +100,6 @@ module.exports = React.createClass( {
 				icon: 'external'
 			} );
 
-			availableControls.push( {
-				text: this.translate( 'Copy' ),
-				className: 'post-controls__copy',
-				href: `/post/${ this.props.site.slug }?copy=${ post.ID }`,
-				onClick: this.copy,
-				icon: 'aside'
-			} );
-
 			if ( config.isEnabled( 'manage/stats' ) ) {
 				statsURL = '/stats/post/' + post.ID + '/' + this.props.site.slug;
 			} else {
@@ -180,6 +172,16 @@ module.exports = React.createClass( {
 					icon: 'trash'
 				} );
 			}
+		}
+
+		if ( post.status === 'publish' && utils.userCan( 'edit_post', post ) ) {
+			availableControls.push( {
+				text: this.translate( 'Copy' ),
+				className: 'post-controls__copy',
+				href: `/post/${ this.props.site.slug }?copy=${ post.ID }`,
+				onClick: this.copy,
+				icon: 'aside'
+			} );
 		}
 
 		// --- Extra Controls (behind ... more link) ---

@@ -7,9 +7,9 @@ var ReactDom = require( 'react-dom' ),
 	i18n = require( 'i18n-calypso' ),
 	page = require( 'page' ),
 	ReduxProvider = require( 'react-redux' ).Provider,
-	startsWith = require( 'lodash/startsWith' ),
 	qs = require( 'querystring' ),
 	isValidUrl = require( 'valid-url' ).isWebUri;
+import { map, pick, startsWith } from 'lodash';
 
 /**
  * Internal dependencies
@@ -25,6 +25,7 @@ import { setEditorPostId } from 'state/ui/editor/actions';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { getEditorPostId, getEditorPath } from 'state/ui/editor/selectors';
 import { editPost } from 'state/posts/actions';
+import wpcom from 'lib/wp';
 
 function getPostID( context ) {
 	if ( ! context.params.post || 'new' === context.params.post ) {
@@ -107,6 +108,39 @@ function getPressThisContent( query ) {
 	return pieces.join( '\n\n' );
 }
 
+// TODO: REDUX - remove flux actions when whole post-editor is reduxified
+// Until the full migration, the Copy Post functionality needs to dispatch both Flux and Redux actions:
+// - (Flux) startEditingNew: to set the editor content;
+// - (Redux) editPost: to set every other attribute (in particular, to update the Category Selector, terms can only be set via Redux);
+// - (Flux) edit: to reliably show the updated post attributes before (auto)saving.
+function startEditingPostCopy( siteId, postToCopyId, context ) {
+	wpcom.site( siteId ).post( postToCopyId ).get().then( postToCopy => {
+		const postAttributes = pick(
+			postToCopy,
+			'canonical_image',
+			'content',
+			'excerpt',
+			'featured_image',
+			'format',
+			'metadata',
+			'post_thumbnail',
+			'terms',
+			'title',
+			'type'
+		);
+		postAttributes.tags = map( postToCopy.tags, 'name' );
+
+		actions.startEditingNew( siteId, {
+			type: 'post',
+			content: postToCopy.content,
+		} );
+		context.store.dispatch( editPost( siteId, null, postAttributes ) );
+		actions.edit( postAttributes );
+	} ).catch( () => {
+		actions.startEditingNew( siteId, { type: 'post' } );
+	} );
+}
+
 module.exports = {
 
 	post: function( context ) {
@@ -133,8 +167,7 @@ module.exports = {
 			// so kick it off here to minimize time spent waiting for it to load
 			// in the view components
 			if ( postToCopyId ) {
-				// TODO: REDUX - remove flux actions when whole post-editor is reduxified
-				actions.startEditingPostCopy( siteId, postToCopyId );
+				startEditingPostCopy( siteId, postToCopyId, context );
 				analytics.pageView.record( '/' + postType, gaTitle + ' > New' );
 			} else if ( postID ) {
 				// TODO: REDUX - remove flux actions when whole post-editor is reduxified

@@ -14,3 +14,4 @@
  */
 
 export canCurrentUser from './can-current-user';
+export hasBrokenSiteUserConnection from './has-broken-site-user-connection';

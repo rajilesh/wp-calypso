@@ -13,12 +13,17 @@ import createReactTapEventPlugin from 'react-tap-event-plugin';
  */
 import useFakeDom from 'test/helpers/use-fake-dom';
 import Gridicon from 'components/gridicon';
-import Accordion from '../';
 
 describe( 'Accordion', function() {
+	let Accordion, AccordionStatus;
+
+	useFakeDom();
 	before( () => {
 		// Unfortunately, there is no corresponding teardown for this plugin
 		createReactTapEventPlugin();
+
+		Accordion = require( '../' );
+		AccordionStatus = require( '../status' );
 	} );
 
 	it( 'should render as expected with a title and content', function() {
@@ -49,9 +54,15 @@ describe( 'Accordion', function() {
 		expect( wrapper.find( '.accordion__subtitle' ) ).to.have.text( 'Subtitle' );
 	} );
 
-	context( 'events', () => {
-		useFakeDom();
+	it( 'should accept a status prop to be rendered in the toggle', () => {
+		const status = { type: 'error', text: 'Warning!', url: 'https://wordpress.com', position: 'top left' };
+		const wrapper = shallow( <Accordion title="Section" status={ status }>Content</Accordion> );
 
+		expect( wrapper ).to.have.className( 'has-status' );
+		expect( wrapper.find( AccordionStatus ).props() ).to.eql( status );
+	} );
+
+	context( 'events', () => {
 		function simulateTouchTap( wrapper ) {
 			TestUtils.Simulate.touchTap( ReactDom.findDOMNode( wrapper.find( '.accordion__toggle' ).node ) );
 		}

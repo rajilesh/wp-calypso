@@ -39,6 +39,7 @@
 		"jetpack/sso": true,
 		"jetpack/sync-panel": true,
 		"jetpack_core_inline_update": true,
+		"jetpack/google-analytics": true,
 		"keyboard-shortcuts": true,
 		"mailing-lists/unsubscribe": true,
 		"manage/add-people": true,

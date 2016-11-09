@@ -316,7 +316,8 @@ export const PLANS_LIST = {
 			FEATURE_PREMIUM_SUPPORT,
 			FEATURE_ONE_CLICK_THREAT_RESOLUTION,
 			FEATURE_POLLS_PRO,
-			FEATURE_ADVANCED_SEO
+			FEATURE_ADVANCED_SEO,
+			FEATURE_GOOGLE_ANALYTICS
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed yearly' )
 
@@ -340,7 +341,8 @@ export const PLANS_LIST = {
 			FEATURE_PREMIUM_SUPPORT,
 			FEATURE_ONE_CLICK_THREAT_RESOLUTION,
 			FEATURE_POLLS_PRO,
-			FEATURE_ADVANCED_SEO
+			FEATURE_ADVANCED_SEO,
+			FEATURE_GOOGLE_ANALYTICS
 		],
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' )
 	}

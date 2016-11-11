@@ -22,10 +22,16 @@ import Card from 'components/card';
 import Button from 'components/button';
 import QueryTaxonomies from 'components/data/query-taxonomies';
 import TaxonomyCard from './taxonomies/taxonomy-card';
-import { isJetpackModuleActive, isJetpackMinimumVersion } from 'state/sites/selectors';
+import {
+	isJetpackModuleActive,
+	isJetpackMinimumVersion,
+	isJetpackSite
+} from 'state/sites/selectors';
 import { getSelectedSiteId } from 'state/ui/selectors';
 import { requestPostTypes } from 'state/post-types/actions';
 import CustomPostTypeFieldset from './custom-post-types-fieldset';
+import MediaSettings from './media-settings';
+import QueryJetpackModules from 'components/data/query-jetpack-modules';
 
 const SiteSettingsFormWriting = React.createClass( {
 	mixins: [ dirtyLinkedState, formBase ],
@@ -134,6 +140,7 @@ const SiteSettingsFormWriting = React.createClass( {
 		const markdownSupported = this.state.markdown_supported;
 		return (
 			<form id="site-settings" onSubmit={ this.submitFormAndActivateCustomContentModule } onChange={ this.props.markChanged }>
+				<QueryJetpackModules siteId={ this.props.siteId }/>
 				{ config.isEnabled( 'manage/site-settings/categories' ) &&
 					<div className="site-settings__taxonomies">
 						<QueryTaxonomies siteId={ this.props.siteId } postType="post" />
@@ -189,7 +196,6 @@ const SiteSettingsFormWriting = React.createClass( {
 						</FormFieldset>
 					}
 				</Card>
-
 				{ config.isEnabled( 'manage/custom-post-types' ) && this.props.jetpackVersionSupportsCustomTypes && (
 					<div>
 						{ this.renderSectionHeader( this.translate( 'Custom Content Types' ) ) }
@@ -231,6 +237,16 @@ const SiteSettingsFormWriting = React.createClass( {
 						</Card>
 					</div>
 				) }
+				{
+					this.props.isJetpackSite && (
+						<MediaSettings
+							site={ this.props.site }
+							submittingForm={ this.state.submittingForm }
+							submitFormAndActivateCustomContentModule={ this.submitFormAndActivateCustomContentModule }
+							fetchingSettings={ this.state.fetchingSettings }
+							/>
+					)
+				}
 			</form>
 		);
 	}
@@ -243,6 +259,7 @@ export default connect(
 		return {
 			jetpackCustomTypesModuleActive: false !== isJetpackModuleActive( state, siteId, 'custom-content-types' ),
 			jetpackVersionSupportsCustomTypes: false !== isJetpackMinimumVersion( state, siteId, '4.2.0' ),
+			isJetpackSite: isJetpackSite( state, siteId ),
 			siteId
 		};
 	},

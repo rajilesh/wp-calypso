@@ -680,6 +680,10 @@ describe( 'selectors', () => {
 	} );
 
 	describe( '#getEditedPost()', () => {
+		beforeEach( () => {
+			getEditedPost.memoizedSelector.cache.clear();
+		} );
+
 		it( 'should return the original post if no revisions exist on site', () => {
 			const postObject = {
 				ID: 841,
@@ -1245,10 +1249,6 @@ describe( 'selectors', () => {
 	} );
 
 	describe( 'editedPostHasContent()', () => {
-		beforeEach( () => {
-			editedPostHasContent.memoizedSelector.cache.clear();
-		} );
-
 		it( 'should return false if there are no edits and no post', () => {
 			const hasContent = editedPostHasContent( {
 				posts: {

@@ -32,6 +32,7 @@ import QueryOlark from 'components/data/query-olark';
 import HelpUnverifiedWarning from '../help-unverified-warning';
 import { connectChat as connectHappychat, sendChatMessage as sendHappychatMessage } from 'state/happychat/actions';
 import { openChat as openHappychat } from 'state/ui/happychat/actions';
+import { getCurrentUserLocale } from 'state/current-user/selectors';
 
 /**
  * Module variables
@@ -197,7 +198,7 @@ const HelpContact = React.createClass( {
 
 	submitSupportForumsTopic: function( contactForm ) {
 		const { subject, message } = contactForm;
-		const { locale } = this.state.olark;
+		const locale = this.props.currentUserLocale;
 
 		this.setState( { isSubmitting: true } );
 
@@ -514,6 +515,7 @@ const HelpContact = React.createClass( {
 export default connect(
 	( state ) => {
 		return {
+			currentUserLocale: getCurrentUserLocale( state ),
 			olarkTimedOut: isOlarkTimedOut( state ),
 			isEmailVerified: isCurrentUserEmailVerified( state ),
 			isHappychatAvailable: isHappychatAvailable( state )

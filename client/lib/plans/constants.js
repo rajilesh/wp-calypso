@@ -305,7 +305,7 @@ export const PLANS_LIST = {
 		getDescription: () => i18n.translate(
 			'More powerful security tools, including malware removal and realtime content backup, for the ultimate peace of mind.'
 		),
-		getFeatures: () => [
+		getFeatures: () => compact( [
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
 			FEATURE_BACKUP_ARCHIVE_UNLIMITED,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -317,8 +317,8 @@ export const PLANS_LIST = {
 			FEATURE_ONE_CLICK_THREAT_RESOLUTION,
 			FEATURE_POLLS_PRO,
 			FEATURE_ADVANCED_SEO,
-			FEATURE_GOOGLE_ANALYTICS
-		],
+			isEnabled( 'jetpack/google-analytics' ) && FEATURE_GOOGLE_ANALYTICS
+		] ),
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed yearly' )
 
 	},
@@ -330,7 +330,7 @@ export const PLANS_LIST = {
 		getDescription: () => i18n.translate(
 			'More powerful security tools, including malware removal and realtime content backup, for the ultimate peace of mind.'
 		),
-		getFeatures: () => [
+		getFeatures: () => compact( [
 			FEATURE_OFFSITE_BACKUP_VAULTPRESS_REALTIME,
 			FEATURE_BACKUP_ARCHIVE_UNLIMITED,
 			FEATURE_BACKUP_STORAGE_SPACE_UNLIMITED,
@@ -342,8 +342,8 @@ export const PLANS_LIST = {
 			FEATURE_ONE_CLICK_THREAT_RESOLUTION,
 			FEATURE_POLLS_PRO,
 			FEATURE_ADVANCED_SEO,
-			FEATURE_GOOGLE_ANALYTICS
-		],
+			isEnabled( 'jetpack/google-analytics' ) && FEATURE_GOOGLE_ANALYTICS
+		] ),
 		getBillingTimeFrame: () => i18n.translate( 'per month, billed monthly' )
 	}
 };

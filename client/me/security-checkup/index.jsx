@@ -40,6 +40,7 @@ import {
 	isUpdatingAccountRecoveryPhone,
 	isDeletingAccountRecoveryEmail,
 	isDeletingAccountRecoveryPhone,
+	isAccountRecoveryEmailValidated,
 } from 'state/account-recovery/settings/selectors';
 import { getCurrentUserId } from 'state/current-user/selectors';
 import { getUser } from 'state/users/selectors';
@@ -97,9 +98,11 @@ const SecurityCheckup = React.createClass( {
 						deleteEmail={ this.props.deleteAccountRecoveryEmail }
 						isLoading={ isRecoveryEmailLoading }
 					/>
-					<RecoveryEmailValidationNotice
-						onResend={ this.props.resendAccountRecoveryEmailValidation }
-					/>
+					{ ! this.props.isEmailValidated &&
+						<RecoveryEmailValidationNotice
+							onResend={ this.props.resendAccountRecoveryEmailValidation }
+						/>
+					}
 				</CompactCard>
 
 				<CompactCard>
@@ -132,6 +135,7 @@ export default connect(
 		accountRecoveryPhone: getAccountRecoveryPhone( state ),
 		accountRecoveryPhoneActionInProgress: isUpdatingAccountRecoveryPhone( state ) || isDeletingAccountRecoveryPhone( state ),
 		primaryEmail: getUser( state, getCurrentUserId( state ) ).email,
+		isEmailValidated: isAccountRecoveryEmailValidated( state ),
 	} ),
 	{
 		updateAccountRecoveryEmail,

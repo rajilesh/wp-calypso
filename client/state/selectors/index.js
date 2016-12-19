@@ -14,3 +14,7 @@
  */
 
 export canCurrentUser from './can-current-user';
+export getMediaItem from './get-media-item';
+export getMediaUrl from './get-media-url';
+export getSiteIconId from './get-site-icon-id';
+export getSiteIconUrl from './get-site-icon-url';

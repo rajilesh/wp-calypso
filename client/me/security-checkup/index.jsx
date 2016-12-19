@@ -22,6 +22,7 @@ import observe from 'lib/mixins/data-observe';
 
 import RecoveryEmail from './recovery-email';
 import RecoveryPhone from './recovery-phone';
+import RecoveryEmailValidationNotice from './recovery-email-validation-notice';
 
 import {
 	updateAccountRecoveryEmail,
@@ -95,6 +96,7 @@ const SecurityCheckup = React.createClass( {
 						deleteEmail={ this.props.deleteAccountRecoveryEmail }
 						isLoading={ isRecoveryEmailLoading }
 					/>
+					<RecoveryEmailValidationNotice />
 				</CompactCard>
 
 				<CompactCard>

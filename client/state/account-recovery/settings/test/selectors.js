@@ -14,7 +14,7 @@ import {
 	isUpdatingAccountRecoveryEmail,
 	isDeletingAccountRecoveryPhone,
 	isDeletingAccountRecoveryEmail,
-	isResendingAccountRecoveryEmailValidation,
+	hasResentAccountRecoveryEmailValidation,
 
 	getAccountRecoveryEmail,
 	getAccountRecoveryPhone,
@@ -192,31 +192,31 @@ describe( '#account-recovery/settings/selectors', () => {
 		} );
 	} );
 
-	describe( '#isResendingAccountRecoveryEmailValidation', () => {
+	describe( '#hasResentAccountRecoveryEmailValidation', () => {
 		it( 'should return false on absence', () => {
 			const state = {
 				accountRecovery: {
 					settings: {
-						isResending: {},
+						hasResentValidation: {},
 					},
 				},
 			};
 
-			assert.isFalse( isResendingAccountRecoveryEmailValidation( state ) );
+			assert.isFalse( hasResentAccountRecoveryEmailValidation( state ) );
 		} );
 
-		it( 'should return isResending.email', () => {
+		it( 'should return hasResentValidation.email', () => {
 			const state = {
 				accountRecovery: {
 					settings: {
-						isResending: {
+						hasResentValidation: {
 							email: true,
 						},
 					},
 				},
 			};
 
-			assert.isTrue( isResendingAccountRecoveryEmailValidation( state ) );
+			assert.isTrue( hasResentAccountRecoveryEmailValidation( state ) );
 		} );
 	} );
 } );

@@ -378,7 +378,7 @@ export function installTheme( themeId, siteId ) {
 					siteId,
 					themeId
 				} );
-				return theme;
+				return { theme }; //needed for connected actions
 			} )
 			.catch( ( error ) => {
 				dispatch( {
@@ -387,7 +387,7 @@ export function installTheme( themeId, siteId ) {
 					themeId,
 					error
 				} );
-				return error;
+				return { error }; //needed for connected action
 			} );
 	};
 }
@@ -418,10 +418,16 @@ export function clearActivated( siteId ) {
 export function installAndTryAndCustomize( themeId, siteId ) {
 	return ( dispatch, getState ) => {
 		return dispatch( installTheme( themeId, siteId ) )
-			.then( ( theme ) => {
-				const url = getThemeCustomizeUrl( getState(), theme, siteId );
+			.then( ( status ) => {
+				if ( status.error ) {
+					//should we dispatch here?
+					return;
+				}
+				const url = getThemeCustomizeUrl( getState(), status.theme, siteId );
 				page( url );
-			} );
+			} )
+			// getThemeCustomizeUrl failures
+			.catch( ( ) => {} );
 	};
 }
 

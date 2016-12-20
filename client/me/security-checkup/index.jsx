@@ -41,7 +41,7 @@ import {
 	isDeletingAccountRecoveryEmail,
 	isDeletingAccountRecoveryPhone,
 	isAccountRecoveryEmailValidated,
-	hasResentAccountRecoveryEmailValidation,
+	hasSentAccountRecoveryEmailValidation,
 } from 'state/account-recovery/settings/selectors';
 import { getCurrentUserId } from 'state/current-user/selectors';
 import { getUser } from 'state/users/selectors';
@@ -136,7 +136,7 @@ export default connect(
 		accountRecoveryPhone: getAccountRecoveryPhone( state ),
 		accountRecoveryPhoneActionInProgress: isUpdatingAccountRecoveryPhone( state ) || isDeletingAccountRecoveryPhone( state ),
 		primaryEmail: getUser( state, getCurrentUserId( state ) ).email,
-		shouldShowEmailValidationNotice: ! isAccountRecoveryEmailValidated( state ) && ! hasResentAccountRecoveryEmailValidation( state )
+		shouldShowEmailValidationNotice: ! isAccountRecoveryEmailValidated( state ) && ! hasSentAccountRecoveryEmailValidation( state )
 	} ),
 	{
 		updateAccountRecoveryEmail,

@@ -55,16 +55,40 @@ const SecurityCheckup = React.createClass( {
 		this.props.userSettings.getSettings();
 	},
 
+	isRecoveryEmailLoading: function() {
+		const {
+			accountRecoverySettingsReady,
+			accountRecoveryEmailActionInProgress,
+		} = this.props;
+
+		return ! accountRecoverySettingsReady || accountRecoveryEmailActionInProgress;
+	},
+
+	isRecoveryPhoneLoading: function() {
+		const {
+			accountRecoverySettingsReady,
+			accountRecoveryPhoneActionInProgress,
+		} = this.props;
+
+		return ! accountRecoverySettingsReady || accountRecoveryPhoneActionInProgress;
+	},
+
+	shouldShowEmailValidationNotice: function() {
+		const {
+			accountRecoveryEmail,
+			accountRecoveryEmailValidated,
+			hasSentEmailValidation,
+		} = this.props;
+
+		return ! this.isRecoveryEmailLoading() && accountRecoveryEmail && ! accountRecoveryEmailValidated && ! hasSentEmailValidation;
+	},
+
 	render: function() {
 		const twoStepEnabled = this.props.userSettings.isTwoStepEnabled();
 
 		const {
 			translate,
-			accountRecoverySettingsReady
 		} = this.props;
-
-		const isRecoveryEmailLoading = ! accountRecoverySettingsReady || this.props.accountRecoveryEmailActionInProgress;
-		const isRecoveryPhoneLoading = ! accountRecoverySettingsReady || this.props.accountRecoveryPhoneActionInProgress;
 
 		const twoStepNoticeMessage = translate(
 			'To edit your SMS Number, go to {{a}}Two-Step Authentication{{/a}}.', {
@@ -97,9 +121,9 @@ const SecurityCheckup = React.createClass( {
 						email={ this.props.accountRecoveryEmail }
 						updateEmail={ this.props.updateAccountRecoveryEmail }
 						deleteEmail={ this.props.deleteAccountRecoveryEmail }
-						isLoading={ isRecoveryEmailLoading }
+						isLoading={ this.isRecoveryEmailLoading() }
 					/>
-					{ this.props.shouldShowEmailValidationNotice && ! isRecoveryEmailLoading &&
+					{ this.shouldShowEmailValidationNotice() &&
 						<RecoveryEmailValidationNotice
 							onResend={ this.props.resendAccountRecoveryEmailValidation }
 						/>
@@ -111,7 +135,7 @@ const SecurityCheckup = React.createClass( {
 						phone={ this.props.accountRecoveryPhone }
 						updatePhone={ this.props.updateAccountRecoveryPhone }
 						deletePhone={ this.props.deleteAccountRecoveryPhone }
-						isLoading={ isRecoveryPhoneLoading }
+						isLoading={ this.isRecoveryPhoneLoading() }
 						disabled={ twoStepEnabled }
 					/>
 					{ twoStepEnabled &&
@@ -132,11 +156,12 @@ export default connect(
 	( state ) => ( {
 		accountRecoveryEmail: getAccountRecoveryEmail( state ),
 		accountRecoveryEmailActionInProgress: isUpdatingAccountRecoveryEmail( state ) || isDeletingAccountRecoveryEmail( state ),
+		accountRecoveryEmailValidated: isAccountRecoveryEmailValidated( state ),
+		hasSentEmailValidation: hasSentAccountRecoveryEmailValidation( state ),
 		accountRecoverySettingsReady: isAccountRecoverySettingsReady( state ),
 		accountRecoveryPhone: getAccountRecoveryPhone( state ),
 		accountRecoveryPhoneActionInProgress: isUpdatingAccountRecoveryPhone( state ) || isDeletingAccountRecoveryPhone( state ),
 		primaryEmail: getUser( state, getCurrentUserId( state ) ).email,
-		shouldShowEmailValidationNotice: ! isAccountRecoveryEmailValidated( state ) && ! hasSentAccountRecoveryEmailValidation( state )
 	} ),
 	{
 		updateAccountRecoveryEmail,

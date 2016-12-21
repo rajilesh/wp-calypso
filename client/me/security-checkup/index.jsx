@@ -42,6 +42,7 @@ import {
 	isDeletingAccountRecoveryEmail,
 	isDeletingAccountRecoveryPhone,
 	isAccountRecoveryEmailValidated,
+	isAccountRecoveryPhoneValidated,
 	hasSentAccountRecoveryEmailValidation,
 } from 'state/account-recovery/settings/selectors';
 import { getCurrentUserId } from 'state/current-user/selectors';
@@ -82,6 +83,15 @@ const SecurityCheckup = React.createClass( {
 		} = this.props;
 
 		return ! this.isRecoveryEmailLoading() && accountRecoveryEmail && ! accountRecoveryEmailValidated && ! hasSentEmailValidation;
+	},
+
+	shouldShowPhoneValidationNotice: function() {
+		const {
+			accountRecoveryPhone,
+			accountRecoveryPhoneValidated,
+		} = this.props;
+
+		return ! this.isRecoveryPhoneLoading() && accountRecoveryPhone && ! accountRecoveryPhoneValidated;
 	},
 
 	render: function() {
@@ -146,7 +156,9 @@ const SecurityCheckup = React.createClass( {
 							showDismiss={ false }
 						/>
 					}
-					<RecoveryPhoneValidationNotice />
+					<RecoveryPhoneValidationNotice
+						onResend={ () => {} }
+					/>
 				</CompactCard>
 
 			</Main>
@@ -163,6 +175,7 @@ export default connect(
 		accountRecoverySettingsReady: isAccountRecoverySettingsReady( state ),
 		accountRecoveryPhone: getAccountRecoveryPhone( state ),
 		accountRecoveryPhoneActionInProgress: isUpdatingAccountRecoveryPhone( state ) || isDeletingAccountRecoveryPhone( state ),
+		accountRecoveryPhoneValidated: isAccountRecoveryPhoneValidated( state ),
 		primaryEmail: getUser( state, getCurrentUserId( state ) ).email,
 	} ),
 	{

@@ -12,10 +12,10 @@ export const getAutomatedTransfer = ( state, siteId ) =>
 /**
  * Helper to get status state from local transfer state sub-tree
  *
- * @param {Object} atatState automated transfer state sub-tree for a site
+ * @param {Object} transferState automated transfer state sub-tree for a site
  * @returns {string} status of transfer
  */
-export const getStatusData = atatState => get( atatState, 'status', null );
+export const getStatusData = transferState => get( transferState, 'status', null );
 
 /**
  * Returns status info for transfer
@@ -32,10 +32,10 @@ export const getAutomatedTransferStatus = compose(
 /**
  * Helper to get eligibility state from local transfer state sub-tree
  *
- * @param {Object} atatState automated transfer state sub-tree for a site
+ * @param {Object} transferState automated transfer state sub-tree for a site
  * @returns {Object} eligibility information for site
  */
-export const getEligibilityData = atatState => get( atatState, 'eligibility', { lastUpdate: 0 } );
+export const getEligibilityData = transferState => get( transferState, 'eligibility', { lastUpdate: 0 } );
 
 /**
  * Returns eligibility info for transfer
@@ -49,14 +49,14 @@ export const getEligibility = compose(
 	getAutomatedTransfer,
 );
 
-export const getPluginData = atatState => get( atatState, 'plugin', null );
+export const getPluginData = transferState => get( transferState, 'plugin', null );
 
 export const getPlugin = compose(
 	getPluginData,
 	getAutomatedTransfer,
 );
 
-export const getThemeData = atatState => get( atatState, 'theme', null );
+export const getThemeData = transferState => get( transferState, 'theme', null );
 
 export const getTheme = compose(
 	getThemeData,

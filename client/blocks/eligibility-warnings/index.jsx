@@ -4,7 +4,7 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { localize } from 'i18n-calypso';
-import { noop } from 'lodash';
+import { get, noop } from 'lodash';
 
 /**
  * Internal dependencies
@@ -78,7 +78,7 @@ const EligibilityWarnings = props => {
 		<div className="eligibility-warnings">
 			<SectionHeader label={ translate( 'Conflicts' ) } />
 
-			{ eligibilityData.eligibilityHolds.map( ( error ) =>
+			{ get( eligibilityData, 'eligibilityHolds', [] ).map( ( error ) =>
 				<Card key={ holdsMessage[ error ].title } className="eligibility-warnings__message">
 					<Gridicon icon="notice" className="eligibility-warnings__error-icon" />
 					<div className="eligibility-warnings__message-content">
@@ -97,7 +97,7 @@ const EligibilityWarnings = props => {
 				</Card>
 			) }
 
-			{ eligibilityData.eligibilityWarnings.map( ( { name, description, supportUrl } ) =>
+			{ get( eligibilityData, 'eligibilityWarnings', [] ).map( ( { name, description, supportUrl } ) =>
 				<Card key={ name } className="eligibility-warnings__message">
 					<Gridicon icon="notice" className="eligibility-warnings__warning-icon" />
 					<div className="eligibility-warnings__message-content">

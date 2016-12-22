@@ -37,3 +37,7 @@ export const isDeletingAccountRecoveryEmail = ( state ) => {
 export const hasSentAccountRecoveryEmailValidation = ( state ) => {
 	return !! state.accountRecovery.settings.hasSentValidation.email;
 };
+
+export const hasSentAccountRecoveryPhoneValidation = ( state ) => {
+	return !! state.accountRecovery.settings.hasSentValidation.phone;
+};

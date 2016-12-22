@@ -15,6 +15,7 @@ import {
 	isDeletingAccountRecoveryPhone,
 	isDeletingAccountRecoveryEmail,
 	hasSentAccountRecoveryEmailValidation,
+	hasSentAccountRecoveryPhoneValidation,
 
 	getAccountRecoveryEmail,
 	getAccountRecoveryPhone,
@@ -217,6 +218,34 @@ describe( '#account-recovery/settings/selectors', () => {
 			};
 
 			assert.isTrue( hasSentAccountRecoveryEmailValidation( state ) );
+		} );
+	} );
+
+	describe( '#hasSentAccountRecoveryPhoneValidation', () => {
+		it( 'should return false on absence', () => {
+			const state = {
+				accountRecovery: {
+					settings: {
+						hasSentValidation: {},
+					},
+				},
+			};
+
+			assert.isFalse( hasSentAccountRecoveryPhoneValidation( state ) );
+		} );
+
+		it( 'should return hasSentValidation.phone', () => {
+			const state = {
+				accountRecovery: {
+					settings: {
+						hasSentValidation: {
+							phone: true,
+						},
+					},
+				},
+			};
+
+			assert.isTrue( hasSentAccountRecoveryPhoneValidation( state ) );
 		} );
 	} );
 } );

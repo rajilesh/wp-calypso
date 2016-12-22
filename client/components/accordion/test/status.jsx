@@ -3,6 +3,7 @@
  */
 import { expect } from 'chai';
 import React from 'react';
+import sinon from 'sinon';
 import { shallow } from 'enzyme';
 
 /**
@@ -53,5 +54,14 @@ describe( 'AccordionStatus', function() {
 		wrapper.simulate( 'mouseLeave' );
 
 		expect( wrapper.find( Tooltip ) ).to.have.prop( 'isVisible' ).be.false;
+	} );
+
+	it( 'should call onClick callback', () => {
+		const spy = sinon.spy();
+		const wrapper = shallow( <AccordionStatus onClick={ spy } /> );
+
+		wrapper.simulate( 'click', { stopPropagation() {} } );
+
+		expect( spy ).to.have.been.calledWithExactly( /* no args */ );
 	} );
 } );

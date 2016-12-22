@@ -55,7 +55,7 @@ describe( 'Accordion', function() {
 	} );
 
 	it( 'should accept a status prop to be rendered in the toggle', () => {
-		const status = { type: 'error', text: 'Warning!', url: 'https://wordpress.com', position: 'top left' };
+		const status = { type: 'error', text: 'Warning!', url: 'https://wordpress.com', position: 'top left', onClick() {} };
 		const wrapper = shallow( <Accordion title="Section" status={ status }>Content</Accordion> );
 
 		expect( wrapper ).to.have.className( 'has-status' );

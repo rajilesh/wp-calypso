@@ -26,6 +26,7 @@ import { isJetpackModuleActive, getSiteOption } from 'state/sites/selectors';
 import { getSiteUserConnections } from 'state/sharing/publicize/selectors';
 import { hasBrokenSiteUserConnection } from 'state/selectors';
 import { postTypeSupports } from 'state/post-types/selectors';
+import { recordGoogleEvent } from 'state/analytics/actions';
 
 const EditorSharingAccordion = React.createClass( {
 	propTypes: {
@@ -109,7 +110,8 @@ const EditorSharingAccordion = React.createClass( {
 				type: 'warning',
 				text: this.translate( 'A broken connection requires repair' ),
 				url: `/sharing/${ this.props.site.slug }`,
-				position: isMobile() ? 'top left' : 'top'
+				position: isMobile() ? 'top left' : 'top',
+				onClick: this.props.onStatusClick
 			};
 		}
 
@@ -156,4 +158,7 @@ export default connect(
 			isPublicizeEnabled
 		};
 	},
+	{
+		onStatusClick: () => recordGoogleEvent( 'Editor', 'Clicked Accordion Broken Status' )
+	}
 )( EditorSharingAccordion );

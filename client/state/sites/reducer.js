@@ -2,7 +2,7 @@
  * External dependencies
  */
 import { combineReducers } from 'redux';
-import { pick, omit, merge, get } from 'lodash';
+import { pick, omit, merge, get, includes } from 'lodash';
 
 /**
  * Internal dependencies
@@ -15,6 +15,7 @@ import updates from './updates/reducer';
 
 import mediaStorage from './media-storage/reducer';
 import {
+	MEDIA_DELETE,
 	SITE_FRONT_PAGE_SET_SUCCESS,
 	SITE_RECEIVE,
 	SITE_REQUEST,
@@ -165,6 +166,19 @@ export function items( state = {}, action ) {
 				...state,
 				[ siteId ]: nextSite
 			};
+		}
+
+		case MEDIA_DELETE: {
+			const { siteId, mediaIds } = action;
+			const siteIconId = get( state[ siteId ], 'icon.media_id' );
+			if ( siteIconId && includes( mediaIds, siteIconId ) ) {
+				return {
+					...state,
+					[ siteId ]: omit( state[ siteId ], 'icon' )
+				};
+			}
+
+			return state;
 		}
 
 		case DESERIALIZE:

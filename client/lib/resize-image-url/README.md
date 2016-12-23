@@ -25,7 +25,7 @@ resizeImageUrl( 'https://1.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60'
 // https://1.gravatar.com/avatar/767fc9c115a1b989744c755db47feb60?s=200
 
 resizeImageUrl( 'https://example.com/image.gif', 50, 20 );
-// https://i0.wp.com/example.com?fit=50%2C20
+// https://i0.wp.com/example.com/image.gif?fit=50%2C20
 ```
 
 If passing an object of query arguments, reference the [Photon API documentation](https://developer.wordpress.com/docs/photon/api/)

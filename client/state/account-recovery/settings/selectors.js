@@ -34,6 +34,10 @@ export const isDeletingAccountRecoveryEmail = ( state ) => {
 	return !! state.accountRecovery.settings.isDeleting.email;
 };
 
+export const isValidatingAccountRecoveryPhone = ( state ) => {
+	return state.accountRecovery.settings.isValidatingPhone;
+};
+
 export const hasSentAccountRecoveryEmailValidation = ( state ) => {
 	return !! state.accountRecovery.settings.hasSentValidation.email;
 };

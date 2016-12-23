@@ -13,9 +13,9 @@ import ButtonGroup from 'components/button';
 import Card from 'components/card';
 import Checkout from 'my-sites/upgrades/checkout';
 import CheckoutData from 'components/data/checkout';
-import Gridicon from 'components/gridicon';
 import FormTextInputWithAffixes from 'components/forms/form-text-input-with-affixes';
 import Main from 'components/main';
+import Manage from './manage';
 import { navigation, siteSelection } from 'my-sites/controller';
 import productsFactory from 'lib/products-list';
 import { renderWithReduxStore } from 'lib/react-helpers';
@@ -26,6 +26,7 @@ import { setSection } from 'state/ui/actions';
 import sitesFactory from 'lib/sites-list';
 import SitePicker from 'components/site-selector';
 import styles from './styles';
+import Stylizer, { insertCss } from './stylizer';
 
 /**
  * Module variables
@@ -128,54 +129,28 @@ const getManageScreen = ( domain ) => {
 	}
 
 	return (
-		<Main>
-			<h2 style={ styles.header }>What do you want to use { domain } for?</h2>
-			<div style={ styles.manageContainer }>
-				<Card style={ styles.manageCard }>
-					<h3>Landing page</h3>
-					<Button href={ '/domains-prototype/manage/landing-page/' + domain } primary>
-						<Gridicon icon="house" /> Edit
-					</Button>
-				</Card>
-				<Card style={ styles.manageCard }>
-					<h3>Start a site</h3>
-					<Button href={ '/domains-prototype/manage/start/' + domain } primary>
-						<Gridicon icon="add" /> Get started
-					</Button>
-				</Card>
-				<Card style={ styles.manageCard }>
-					<h3>Connect to existing site</h3>
-					<Button href={ '/domains-prototype/manage/connect/' + domain } primary>
-						<Gridicon icon="plugins" /> Connect
-					</Button>
-				</Card>
-				<Card style={ styles.manageCard }>
-					<h3>Add email</h3>
-					<Button href={ '/domains/manage/email/' + domain } primary>
-						<Gridicon icon="mention" /> Set up email
-					</Button>
-				</Card>
-				<Card style={ styles.manageCard }>
-					<h3>Something else</h3>
-					<Button href={ '/domains/manage/' + domain } primary>
-						<Gridicon icon="cog" /> Configure settings
-					</Button>
-				</Card>
-			</div>
-		</Main>
+		<Manage domain={ domain } />
 	);
+};
+
+const render = ( content, context ) => {
+	renderWithReduxStore( (
+		<Stylizer onInsertCss={ insertCss }>
+			{ content }
+		</Stylizer>
+	), document.getElementById( 'primary' ), context.store );
 };
 
 const manage = ( context ) => {
 	const domain = context.params.domainName;
-	renderWithReduxStore( getManageScreen( domain ), document.getElementById( 'primary' ), context.store );
+	render( getManageScreen( domain ), context );
 };
 
 const landingPage = ( context ) => {
 	const domain = context.params.domainName;
 	renderWithReduxStore( (
 		<Main>
-			<h2>Set up a landing page for { domain }</h2>
+			<h2 className={ styles.header }>Set up a landing page for { domain }</h2>
 			<p>I think we can probably just show the customizer here</p>
 			<Button href={ '/domains-prototype/manage/' + domain }>Finish</Button>
 		</Main>

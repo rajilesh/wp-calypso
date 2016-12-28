@@ -30,6 +30,16 @@ export function imageSizeFromAttachments( post, imageUrl ) {
 	}
 }
 
+export function stripPhotonParams( imageUrl ) {
+	if ( ! imageUrl ) {
+		return imageUrl;
+	}
+	const parsedUrl = url.parse( imageUrl );
+	parsedUrl.query = ''; // remove query params
+
+	return url.format( parsedUrl );
+}
+
 export function maxWidthPhotonishURL( imageURL, width ) {
 	if ( ! imageURL ) {
 		return imageURL;

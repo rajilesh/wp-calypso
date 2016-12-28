@@ -13,7 +13,7 @@ import url from 'url';
  * Internal Dependencies
  */
 import safeImageURL from 'lib/safe-image-url';
-import { maxWidthPhotonishURL } from './utils';
+import { maxWidthPhotonishURL, stripPhotonParams } from './utils';
 
 const TRANSPARENT_GIF = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
 
@@ -60,7 +60,7 @@ function isCandidateForContentImage( imageUrl ) {
 	} );
 }
 
-export default function( maxWidth = false ) {
+export default function( maxWidth = false, shouldStripPhotonParams = false ) {
 	return function makeImagesSafe( post, dom ) {
 		let content_images = [],
 			images;
@@ -105,6 +105,8 @@ export default function( maxWidth = false ) {
 
 			if ( maxWidth ) {
 				safeSource = maxWidthPhotonishURL( safeSource, maxWidth );
+			} else if ( shouldStripPhotonParams ) {
+				safeSource = stripPhotonParams( safeSource );
 			}
 
 			image.setAttribute( 'src', safeSource );

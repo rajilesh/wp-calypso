@@ -7,7 +7,7 @@ import getEmbedMetadata from 'get-video-id';
 /**
  * Internal Dependencies
  */
-import { iframeIsWhitelisted } from './utils';
+import { iframeIsWhitelisted, stripPhotonParams } from './utils';
 
 /** Checks whether or not an image is a tracking pixel
 * @param {Node} image - DOM node for an img
@@ -52,7 +52,7 @@ function isCandidateForContentImage( image ) {
 const detectImage = ( image ) => {
 	if ( isCandidateForContentImage( image ) ) {
 		return {
-			src: image.getAttribute( 'src' ),
+			src: stripPhotonParams( image.getAttribute( 'src' ) ),
 			width: image.width,
 			height: image.height,
 			mediaType: 'image',

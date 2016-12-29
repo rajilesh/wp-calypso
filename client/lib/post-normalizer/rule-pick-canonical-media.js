@@ -28,7 +28,8 @@ function isCandidateForFeature( media ) {
 	}
 
 	if ( media.mediaType === 'image' ) {
-		return isImageLargeEnoughForFeature( media );
+		// jetpack lies about thumbnails/featured_images so we need to make sure its actually an image
+		return isImageLargeEnoughForFeature( media ) && isUrlLikelyAnImage( media.src );
 	} else if ( media.mediaType === 'video' ) {
 		// we need to know how to autoplay it which probably means we know how to get a thumbnail
 		return media.autoplayIframe;
@@ -45,18 +46,6 @@ function isCandidateForFeature( media ) {
  */
 export default function pickCanonicalMedia( post ) {
 	if ( ! post ) {
-		return post;
-	}
-
-	// jetpack lies about thumbnails/featured_images so we need to make sure its actually an image
-	if ( post.featured_image && isUrlLikelyAnImage( post.featured_image ) &&
-			isImageLargeEnoughForFeature( post.post_thumbnail ) ) {
-		post.canonical_media = {
-			src: post.featured_image,
-			height: post.post_thumbnail.height,
-			width: post.post_thumbnail.width,
-			mediaType: 'image',
-		};
 		return post;
 	}
 

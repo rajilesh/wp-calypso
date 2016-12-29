@@ -14,7 +14,7 @@ import {
 /**
  * Internal Dependencies
  */
-import { thumbIsLikelyImage } from './utils';
+import { thumbIsLikelyImage, stripPhotonParams } from './utils';
 import debugFactory from 'debug';
 
 const debug = debugFactory( 'calypso:post-normalizer:wait-for-images-to-load' );
@@ -90,7 +90,7 @@ export default function waitForImagesToLoad( post ) {
 			resolve( post );
 			return;
 		}
-
+		imagesToCheck = imagesToCheck.map(stripPhotonParams);
 		// dedupe the set of images
 		imagesToCheck = uniq( imagesToCheck );
 

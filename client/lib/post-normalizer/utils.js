@@ -35,7 +35,7 @@ export function stripPhotonParams( imageUrl ) {
 		return imageUrl;
 	}
 	const parsedUrl = url.parse( imageUrl );
-	parsedUrl.query = ''; // remove query params
+	parsedUrl.query = parsedUrl.search = ''; // remove query params
 
 	return url.format( parsedUrl );
 }

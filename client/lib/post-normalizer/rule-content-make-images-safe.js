@@ -60,7 +60,7 @@ function isCandidateForContentImage( imageUrl ) {
 	} );
 }
 
-export default function( maxWidth = false, shouldStripPhotonParams = false ) {
+export default function( maxWidth = false ) {
 	return function makeImagesSafe( post, dom ) {
 		let content_images = [],
 			images;
@@ -105,8 +105,6 @@ export default function( maxWidth = false, shouldStripPhotonParams = false ) {
 
 			if ( maxWidth ) {
 				safeSource = maxWidthPhotonishURL( safeSource, maxWidth );
-			} else if ( shouldStripPhotonParams ) {
-				safeSource = stripPhotonParams( safeSource );
 			}
 
 			image.setAttribute( 'src', safeSource );
@@ -117,10 +115,10 @@ export default function( maxWidth = false, shouldStripPhotonParams = false ) {
 
 			if ( isCandidateForContentImage( imgSource ) ) {
 				content_images.push( {
-					src: safeSource,
+					src: stripPhotonParams( safeSource ),
 					original_src: imgSource,
 					width: image.width,
-					height: image.height
+					height: image.height,
 				} );
 			}
 		} );

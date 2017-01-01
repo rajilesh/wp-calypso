@@ -81,7 +81,7 @@ module.exports = {
 		allowExistingUsers: true,
 	},
 	siteTitleStep: {
-		datestamp: '20180101',
+		datestamp: '20170101',
 		variations: {
 			showSiteTitleStep: 5,
 			hideSiteTitleStep: 95,
